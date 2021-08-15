@@ -7,7 +7,7 @@ namespace Core.Entities
     {
         public string Header { get; set; }
         public string Text { get; set; }
-        public List<Notes> Notes { get; set; }
+        public List<Note> Notes { get; set; }
         public List<Video> Videos { get; set; }
         public List<Article> Articles { get; set; }
         public bool IsDone { get; set; }
