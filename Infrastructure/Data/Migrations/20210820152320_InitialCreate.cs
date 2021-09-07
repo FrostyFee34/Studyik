@@ -8,19 +8,19 @@ namespace Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Jobs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Header = table.Column<string>(type: "TEXT", nullable: true),
                     Text = table.Column<string>(type: "TEXT", nullable: true),
-                    IsDone = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    IsDone = table.Column<long>(type: "INTEGER", nullable: false),
+                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Jobs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,16 +33,16 @@ namespace Infrastructure.Data.Migrations
                     Text = table.Column<string>(type: "TEXT", nullable: true),
                     Link = table.Column<string>(type: "TEXT", nullable: true),
                     IsDone = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    TaskId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    JobId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Articles_Tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        name: "FK_Articles_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -57,16 +57,16 @@ namespace Infrastructure.Data.Migrations
                     Text = table.Column<string>(type: "TEXT", nullable: true),
                     Link = table.Column<string>(type: "TEXT", nullable: true),
                     IsDone = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    TaskId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ReminderTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    JobId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Videos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Videos_Tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        name: "FK_Videos_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -79,9 +79,9 @@ namespace Infrastructure.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Header = table.Column<string>(type: "TEXT", nullable: true),
                     Text = table.Column<string>(type: "TEXT", nullable: true),
-                    Timestamp = table.Column<int>(type: "INTEGER", nullable: false),
+                    Timestamp = table.Column<int>(type: "INTEGER", nullable: true),
                     ArticleId = table.Column<int>(type: "INTEGER", nullable: true),
-                    TaskId = table.Column<int>(type: "INTEGER", nullable: true),
+                    JobId = table.Column<int>(type: "INTEGER", nullable: true),
                     VideoId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -94,9 +94,9 @@ namespace Infrastructure.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Notes_Tasks_TaskId",
-                        column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        name: "FK_Notes_Jobs_JobId",
+                        column: x => x.JobId,
+                        principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -108,9 +108,9 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_TaskId",
+                name: "IX_Articles_JobId",
                 table: "Articles",
-                column: "TaskId");
+                column: "JobId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_ArticleId",
@@ -118,9 +118,9 @@ namespace Infrastructure.Data.Migrations
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notes_TaskId",
+                name: "IX_Notes_JobId",
                 table: "Notes",
-                column: "TaskId");
+                column: "JobId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_VideoId",
@@ -128,9 +128,9 @@ namespace Infrastructure.Data.Migrations
                 column: "VideoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Videos_TaskId",
+                name: "IX_Videos_JobId",
                 table: "Videos",
-                column: "TaskId");
+                column: "JobId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -145,7 +145,7 @@ namespace Infrastructure.Data.Migrations
                 name: "Videos");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "Jobs");
         }
     }
 }

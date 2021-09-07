@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StudyikDbContext))]
-    [Migration("20210805122324_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210827024528_JobsIsDoneToBool")]
+    partial class JobsIsDoneToBool
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,23 +30,46 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("IsDone")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("JobId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Link")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("ReminderTime")
+                    b.Property<DateTime?>("ReminderTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("TaskId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("JobId");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Core.Entities.Job", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ReminderTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("Core.Entities.Note", b =>
@@ -61,13 +84,13 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TaskId")
+                    b.Property<int?>("JobId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Timestamp")
+                    b.Property<int?>("Timestamp")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("VideoId")
@@ -77,36 +100,13 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("JobId");
 
                     b.HasIndex("VideoId");
 
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("Core.Entities.Task", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Header")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("ReminderTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tasks");
-                });
-
             modelBuilder.Entity("Core.Entities.Video", b =>
                 {
                     b.Property<int>("Id")
@@ -119,52 +119,62 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("IsDone")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("JobId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Link")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("ReminderTime")
+                    b.Property<DateTime?>("ReminderTime")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("TaskId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("JobId");
 
                     b.ToTable("Videos");
                 });
 
             modelBuilder.Entity("Core.Entities.Article", b =>
                 {
-                    b.HasOne("Core.Entities.Task", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Articles")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("JobId");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Core.Entities.Note", b =>
                 {
-                    b.HasOne("Core.Entities.Article", null)
+                    b.HasOne("Core.Entities.Article", "Article")
                         .WithMany("Notes")
                         .HasForeignKey("ArticleId");
 
-                    b.HasOne("Core.Entities.Task", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Notes")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("JobId");
 
-                    b.HasOne("Core.Entities.Video", null)
+                    b.HasOne("Core.Entities.Video", "Video")
                         .WithMany("Notes")
                         .HasForeignKey("VideoId");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("Core.Entities.Video", b =>
                 {
-                    b.HasOne("Core.Entities.Task", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Videos")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("JobId");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Core.Entities.Article", b =>
@@ -172,7 +182,7 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Notes");
                 });
 
-            modelBuilder.Entity("Core.Entities.Task", b =>
+            modelBuilder.Entity("Core.Entities.Job", b =>
                 {
                     b.Navigation("Articles");
 

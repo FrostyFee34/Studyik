@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StudyikDbContext))]
-    partial class StudyikDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210820152320_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsDone")
+                    b.Property<long>("IsDone")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("ReminderTime")
@@ -138,31 +140,41 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Article", b =>
                 {
-                    b.HasOne("Core.Entities.Job", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Articles")
                         .HasForeignKey("JobId");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Core.Entities.Note", b =>
                 {
-                    b.HasOne("Core.Entities.Article", null)
+                    b.HasOne("Core.Entities.Article", "Article")
                         .WithMany("Notes")
                         .HasForeignKey("ArticleId");
 
-                    b.HasOne("Core.Entities.Job", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Notes")
                         .HasForeignKey("JobId");
 
-                    b.HasOne("Core.Entities.Video", null)
+                    b.HasOne("Core.Entities.Video", "Video")
                         .WithMany("Notes")
                         .HasForeignKey("VideoId");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("Core.Entities.Video", b =>
                 {
-                    b.HasOne("Core.Entities.Job", null)
+                    b.HasOne("Core.Entities.Job", "Job")
                         .WithMany("Videos")
                         .HasForeignKey("JobId");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Core.Entities.Article", b =>

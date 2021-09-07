@@ -10,7 +10,7 @@ namespace Infrastructure.Data
 
         public DbSet<Article> Articles { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<Video> Videos { get; set; }
     }
 }

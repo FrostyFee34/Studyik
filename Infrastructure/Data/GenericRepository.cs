@@ -4,28 +4,27 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure
+namespace Infrastructure.Data
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        private readonly StudyikDbContext _storeContext;
+        private readonly StudyikDbContext _studyikDbContext;
 
-        public GenericRepository(StudyikDbContext storeContext)
+        public GenericRepository(StudyikDbContext studyikDbContext)
         {
-            _storeContext = storeContext;
+            _studyikDbContext = studyikDbContext;
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _storeContext.Set<T>().FindAsync(id);
+            return await _studyikDbContext.Set<T>().FindAsync(id);
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
-            return await _storeContext.Set<T>().ToListAsync();
+            return await _studyikDbContext.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetEntityWithSpecification(ISpecification<T> spec)
@@ -43,9 +42,27 @@ namespace Infrastructure
             return await ApplySpecification(spec).CountAsync();
         }
 
+        public async Task<bool> Insert(T obj)
+        {
+            _studyikDbContext.Set<T>().Add(obj);
+            var task =  _studyikDbContext.SaveChangesAsync();
+            await task;
+            return task.IsCompleted;
+
+        }
+
+        public async Task<bool> Update(T obj)
+        {
+            _studyikDbContext.Set<T>().Update(obj);
+            var task = _studyikDbContext.SaveChangesAsync();
+            await task;
+            return task.IsCompleted;
+
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_storeContext.Set<T>().AsQueryable(), spec);
+            return SpecificationEvaluator<T>.GetQuery(_studyikDbContext.Set<T>().AsQueryable(), spec);
         }
     }
 }
