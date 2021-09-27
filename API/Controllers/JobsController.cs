@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTO;
+using API.Errors;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Core.Specifications.Params;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -20,12 +22,15 @@ namespace API.Controllers
             _jobsRepo = jobsRepo;
             _mapper = mapper;
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IReadOnlyList<Job>>> GetJob(int id)
         {
             var spec = new JobsWithArticlesNotesAndVideosSpec(id);
-            var jobs = await _jobsRepo.GetEntityWithSpecification(spec);
-            return Ok(jobs);
+            var job = await _jobsRepo.GetEntityWithSpecification(spec);
+            if (job == null) return NotFound(new ApiResponse(404));
+            return Ok(job);
         }
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Job>>> GetJobs([FromQuery] JobSpecParams jobParams)

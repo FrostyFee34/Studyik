@@ -19,7 +19,7 @@ namespace API.Controllers
             _notesRepo = notesRepo;
             _mapper = mapper;
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<IReadOnlyList<Note>>> GetNote(int id)
         {
             var spec = new NotesWithSearchSpec(id);

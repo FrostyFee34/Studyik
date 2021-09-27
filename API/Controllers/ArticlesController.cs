@@ -19,7 +19,7 @@ namespace API.Controllers
             _articlesRepo = articlesRepo;
             _mapper = mapper;
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<IReadOnlyList<Article>>> GetArticle(int id)
         {
             var spec = new ArticlesWithNotesSpec(id);

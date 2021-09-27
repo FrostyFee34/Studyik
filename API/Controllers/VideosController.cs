@@ -20,7 +20,7 @@ namespace API.Controllers
             _videosRepo = videosRepo;
             _mapper = mapper;
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<IReadOnlyList<Video>>> GetVideo(int id)
         {
             var spec = new VideosWithNotesSpec(id);
