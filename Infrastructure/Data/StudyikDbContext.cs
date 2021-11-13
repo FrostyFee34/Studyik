@@ -8,9 +8,9 @@ namespace Infrastructure.Data
         {
         }
 
-        public DbSet<Article> Articles { get; set; }
+        public DbSet<Material> Materials { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Group> Groups { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Job> Jobs { get; set; }
-        public DbSet<Video> Videos { get; set; }
     }
 }

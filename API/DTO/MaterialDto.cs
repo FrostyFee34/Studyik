@@ -1,6 +1,6 @@
 ﻿namespace API.DTO
 {
-    public class NoteDto
+    public class MaterialDto
     {
         
     }
