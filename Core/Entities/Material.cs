@@ -9,5 +9,6 @@
         public int GroupId { get; set; }
         public Category Category { get; set; }
         public int CategoryId { get; set; }
+        public string UserUid { get; set; }
     }
 }

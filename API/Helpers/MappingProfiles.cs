@@ -8,7 +8,7 @@ namespace API.Helpers
     {
         public MappingProfiles()
         {
-           
+            CreateMap<NoteDto, Note>().ReverseMap();
 
         }
     }

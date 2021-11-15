@@ -1,5 +1,6 @@
 ﻿using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -11,7 +12,8 @@ namespace API.Controllers
         {
             _context = context;
         }
-
+        
+        [Authorize]
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
         {

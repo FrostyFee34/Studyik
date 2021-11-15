@@ -42,22 +42,16 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
-        public async Task<bool> Insert(T obj)
+        public Task<int> InsertAsync(T obj)
         {
             _studyikDbContext.Set<T>().Add(obj);
-            var task =  _studyikDbContext.SaveChangesAsync();
-            await task;
-            return task.IsCompleted;
-
+            return _studyikDbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Update(T obj)
+        public Task<int> UpdateAsync(T obj)
         {
             _studyikDbContext.Set<T>().Update(obj);
-            var task = _studyikDbContext.SaveChangesAsync();
-            await task;
-            return task.IsCompleted;
-
+            return _studyikDbContext.SaveChangesAsync();
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

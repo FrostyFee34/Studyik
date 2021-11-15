@@ -18,10 +18,10 @@ namespace API.Errors
         {
             return statusCode switch
             {
-                400 => "A bad request, you have made,",
-                401 => "Authorized, you are not",
-                404 => "Resource found, it was not",
-                500 => "Error are the path to the dark side.",
+                400 => "A bad request",
+                401 => "You are not authorized",
+                404 => "Resource was not found",
+                500 => "Error on the server-side",
                 _ => null
             };
         }
