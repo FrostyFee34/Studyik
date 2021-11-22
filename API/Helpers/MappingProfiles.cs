@@ -9,9 +9,10 @@ namespace API.Helpers
         public MappingProfiles()
         {
             CreateMap<Note, NoteDto>().ReverseMap();
-            CreateMap<Material, MaterialDto>()
+            CreateMap<Material, MateriaToReturnlDto>()
                 .ForMember(d => d.Category, o => o.MapFrom(s => s.Category.Name))
                 .ForMember(d => d.Group, o => o.MapFrom(s => s.Group.Name))
+                .ForMember(d => d.Link, o => o.MapFrom<MaterialUrlResolver>())
                 .ReverseMap();
             CreateMap<MaterialToInsertDto, Material>().ReverseMap();
         }
