@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace API
 {
     public class Program
-    { 
+    {
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -27,7 +23,6 @@ namespace API
                     var context = services.GetRequiredService<StudyikDbContext>();
                     await context.Database.MigrateAsync();
                     await StudyikDbContextSeed.SeedAsync(context, loggerFactory);
-
                 }
                 catch (Exception e)
                 {
@@ -40,11 +35,10 @@ namespace API
             await host.RunAsync();
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 }

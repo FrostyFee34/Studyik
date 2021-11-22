@@ -6,6 +6,7 @@ ECommerceTryCatchLearn.sln.DotSettings.user
 *.db
 .vs/
 api/keys/
+api/resources/
 
 API/studyik.db-wal
 API/studyik.db-shm

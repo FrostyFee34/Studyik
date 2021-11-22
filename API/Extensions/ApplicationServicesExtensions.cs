@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using API.Errors;
 using Core.Interfaces;
 using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +30,7 @@ namespace API.Extensions
 
             var claims = new Dictionary<string, object>
             {
-                { ClaimTypes.Role, "User" }
+                {ClaimTypes.Role, "User"}
             };
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -61,6 +60,14 @@ namespace API.Extensions
                     var errorResponse = new ApiValidationErrorResponse {Errors = errors};
                     return new BadRequestObjectResult(errorResponse);
                 };
+            });
+
+            // File size limit
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
             });
 
             return services;

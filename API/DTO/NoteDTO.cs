@@ -8,6 +8,5 @@
         public uint? StartIndex { get; set; }
         public uint? EndIndex { get; set; }
         public int? MaterialId { get; set; }
-        public string UserUid { get; set; }
     }
 }

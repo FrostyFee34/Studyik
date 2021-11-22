@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Content\UserFiles\" />
+    <Folder Include="Resources\Files\" />
   </ItemGroup>
 
 </Project>

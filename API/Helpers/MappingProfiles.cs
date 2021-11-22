@@ -8,8 +8,12 @@ namespace API.Helpers
     {
         public MappingProfiles()
         {
-            CreateMap<NoteDto, Note>().ReverseMap();
-
+            CreateMap<Note, NoteDto>().ReverseMap();
+            CreateMap<Material, MaterialDto>()
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Category.Name))
+                .ForMember(d => d.Group, o => o.MapFrom(s => s.Group.Name))
+                .ReverseMap();
+            CreateMap<MaterialToInsertDto, Material>().ReverseMap();
         }
     }
 }

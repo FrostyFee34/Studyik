@@ -31,9 +31,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(NoteDto noteDto)
         {
-            noteDto.UserUid ??= _currentUser.GetUid();
-
             var note = _mapper.Map<Note>(noteDto);
+            note.UserUid ??= _currentUser.GetUid();
+
             var isFinished = await _repo.InsertAsync(note);
             if (isFinished <= 0)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
@@ -45,9 +45,9 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(NoteDto noteDto)
         {
-            noteDto.UserUid ??= _currentUser.GetUid();
-
             var note = _mapper.Map<Note>(noteDto);
+            note.UserUid ??= _currentUser.GetUid();
+
             var isFinished = await _repo.UpdateAsync(note);
             if (isFinished <= 0)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
@@ -59,9 +59,9 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<NoteDto>>> GetNotes()
         {
             var userUid = _currentUser.GetUid();
-            if (userUid == null) return BadRequest(new ApiException(400));
+            if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
 
-            var spec = new NoteByUserUidSpecification(userUid);
+            var spec = new NotesByUserUidSpec(userUid);
             var notes = await _repo.ListAsync(spec);
 
             return Ok(_mapper.Map<IReadOnlyList<NoteDto>>(notes));
@@ -71,9 +71,9 @@ namespace API.Controllers
         public async Task<ActionResult<NoteDto>> GetNote(int noteId)
         {
             var userUid = _currentUser.GetUid();
-            if (userUid == null) return BadRequest(new ApiException(400));
+            if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
 
-            var spec = new NotesByUserUidAndNoteIdSpecification(userUid, noteId);
+            var spec = new NoteByUserUidAndNoteIdSpec(userUid, noteId);
 
             var note = await _repo.GetEntityWithSpecification(spec);
 
