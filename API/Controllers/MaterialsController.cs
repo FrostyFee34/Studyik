@@ -56,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<MateriaToReturnlDto>>> GetMaterials()
+        public async Task<ActionResult<IReadOnlyList<MaterialToReturnDto>>> GetMaterials()
         {
             var userUid = _currentUser.GetUid();
             if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
@@ -64,11 +64,11 @@ namespace API.Controllers
             var spec = new MaterialsByUserUidSpec(userUid);
             var materials = await _repo.ListAsync(spec);
 
-            return Ok(_mapper.Map<IReadOnlyList<MateriaToReturnlDto>>(materials));
+            return Ok(_mapper.Map<IReadOnlyList<MaterialToReturnDto>>(materials));
         }
 
         [HttpGet("{materialId}")]
-        public async Task<ActionResult<IReadOnlyList<MateriaToReturnlDto>>> GetMaterial(int materialId)
+        public async Task<ActionResult<IReadOnlyList<MaterialToReturnDto>>> GetMaterial(int materialId)
         {
             var userUid = _currentUser.GetUid();
             if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
@@ -76,7 +76,7 @@ namespace API.Controllers
             var spec = new MaterialByUserUidAndMaterialId(userUid, materialId);
             var materials = await _repo.GetEntityWithSpecification(spec);
 
-            return Ok(_mapper.Map<MateriaToReturnlDto>(materials));
+            return Ok(_mapper.Map<MaterialToReturnDto>(materials));
         }
     }
 }

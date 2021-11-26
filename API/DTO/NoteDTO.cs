@@ -1,4 +1,6 @@
-﻿namespace API.DTO
+﻿using System;
+
+namespace API.DTO
 {
     public class NoteDto
     {
@@ -8,5 +10,6 @@
         public uint? StartIndex { get; set; }
         public uint? EndIndex { get; set; }
         public int? MaterialId { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

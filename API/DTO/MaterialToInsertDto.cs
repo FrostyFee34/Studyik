@@ -1,4 +1,6 @@
-﻿namespace API.DTO
+﻿using System;
+
+namespace API.DTO
 {
     public class MaterialToInsertDto
     {
@@ -7,5 +9,6 @@
         public string Content { get; set; }
         public int? GroupId { get; set; }
         public int CategoryId { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

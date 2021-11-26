@@ -27,37 +27,69 @@ namespace API.Controllers
             _currentUser = new UserResolverService(httpContextAccessor);
         }
 
+        [HttpGet("{materialId}")]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult<IFormFile>> GetFile(int materialId)
+        {
+            var userUid = _currentUser.GetUid();
+            if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
+
+            // Gets a corresponding material 
+            var spec = new MaterialByUserUidAndMaterialId(userUid, materialId);
+            var material = await _repo.GetEntityWithSpecification(spec);
+            if (material == null || material.Category.Name != "File" || material.Link == null)
+                return BadRequest(new ApiException(400, @"You cannot get a file of this material"));
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), material.Link);  
+  
+
+            var memory = new MemoryStream();
+            await using (var stream = new FileStream(path, FileMode.Open))  
+            {  
+                await stream.CopyToAsync(memory);  
+            }  
+            memory.Position = 0;
+            var ext = Path.GetExtension(path).Substring(1);
+            var fileName = Path.GetFileName(path);
+
+            return File(memory, $"application/pdf" , fileName); 
+        }
+
+
         [HttpPut("{materialId}")]
         [DisableRequestSizeLimit]
         public async Task<ActionResult> AddFile(int materialId)
         {
-            // Get a corresponding material and check if it's category supports file
             var userUid = _currentUser.GetUid();
             if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
 
+            // Gets a corresponding material 
             var spec = new MaterialByUserUidAndMaterialId(userUid, materialId);
             var material = await _repo.GetEntityWithSpecification(spec);
             if (material == null || material.Category.Name != "File")
-                return BadRequest(new ApiException(400, @"You cannot add a file to this material"));
+                return BadRequest(new ApiException(400, "You cannot add a file to this material"));
 
             try
             {
                 // Get a file out of request form
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-
+                
                 var folderName = Path.Combine("Resources", "Files");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (file.Length > 0)
                 {
-                    // Get a file name and hash it
+                    // Get a file name and rename it
                     var fileName = file.FileName.Trim('"');
+                    if (Path.GetExtension(fileName) != ".pdf")
+                    {
+                        return BadRequest(new ApiException(400, "Wrong file type"));
+                    }
+
                     if (material.Link == null)
                     {
-                        using var hash = SHA256.Create();
-                        var byteArray = hash.ComputeHash(Encoding.UTF8.GetBytes(fileName + DateTime.Now + userUid));
-                        fileName = $"{Convert.ToHexString(byteArray).ToLower()}{Path.GetExtension(fileName)}";
+                        fileName = RenameFile(fileName, userUid);
                     }
 
                     // Save a file to drive
@@ -83,8 +115,16 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiException(500, "Error while saving a file", ex.StackTrace));
+                return StatusCode(500, new ApiException(500, "Error while saving a file", ex.Message));
             }
+        }
+
+        private static string RenameFile(string fileName, string userUid)
+        {
+            using var hash = SHA256.Create();
+            var byteArray = hash.ComputeHash(Encoding.UTF8.GetBytes(fileName + DateTime.Now + userUid));
+            fileName = $"{Convert.ToHexString(byteArray).ToLower()}{Path.GetExtension(fileName)}";
+            return fileName;
         }
     }
 }
