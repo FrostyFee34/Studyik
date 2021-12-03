@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
-import { HomeService } from 'src/app/home/home.service';
-import { IUser, User } from 'src/app/shared/models/user';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from 'src/app/auth/auth.service';
+import {MaterialsService} from 'src/app/materials/materials.service';
+import {User} from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,21 +11,23 @@ import { IUser, User } from 'src/app/shared/models/user';
 export class NavBarComponent implements OnInit {
 
   currentUser?: User | null;
-  constructor(public authService: AuthService, public homeService: HomeService) { }
+
+  constructor(public authService: AuthService, public homeService: MaterialsService) {
+  }
 
   ngOnInit(): void {
     this.setUser();
   }
 
-  setUser(){
+  setUser() {
     this.authService.user$.subscribe((user) => {
-      if(user != null){
+      if (user != null) {
         this.currentUser = user;
       }
     })
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
     this.homeService.updateMaterials();
   }

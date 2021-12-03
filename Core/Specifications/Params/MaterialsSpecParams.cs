@@ -4,5 +4,6 @@
     {
         public int? GroupId { get; set; }
         public int? CategoryId { get; set; }
+       
     }
 }

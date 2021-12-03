@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeModule } from './home/home.module';
+import { MaterialsModule } from './materials/materials.module';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
@@ -23,7 +23,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 		AppRoutingModule,
 		NgbModule,
 		CoreModule,
-		HomeModule,
+		MaterialsModule,
 		AngularFireModule.initializeApp(environment.firebase),
 		AngularFirestoreModule,
 		AngularFireAuthModule,

@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IMaterial } from '../shared/models/material';
-import { HomeService } from './home.service';
+import { MaterialsService } from './materials.service';
 
 @Component({
 	selector: 'app-home',
-	templateUrl: './home.component.html',
-	styleUrls: ['./home.component.scss'],
+	templateUrl: './materials.component.html',
+	styleUrls: ['./materials.component.scss'],
 })
-export class HomeComponent implements OnInit {
-	materialsObservable$?: Observable<IMaterial[]>; 
-	constructor(public homeService: HomeService) {}
-	
+export class MaterialsComponent implements OnInit {
+	materialsObservable$?: Observable<IMaterial[]>;
+	constructor(public homeService: MaterialsService) {}
+
 	ngOnInit(): void {
 		this.homeService.updateMaterials();
 		this.materialsObservable$ = this.homeService.getMaterials();

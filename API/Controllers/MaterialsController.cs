@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTO;
 using API.Errors;
@@ -35,7 +36,7 @@ namespace API.Controllers
         {
             var material = _mapper.Map<Material>(materialDto);
             material.UserUid ??= _currentUser.GetUid();
-
+            
             var isFinished = await _repo.InsertAsync(material);
             if (isFinished <= 0)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
@@ -59,12 +60,20 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<MaterialToReturnDto>>> GetMaterials(
             [FromQuery] MaterialsSpecParams specParams)
-        {
+        {   
             var userUid = _currentUser.GetUid();
             if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
 
             var spec = new MaterialsByUserUidAndParamsSpec(specParams, userUid);
             var materials = await _repo.ListAsync(spec);
+
+            // Removing links
+            foreach (var t in materials)
+            {
+                if (t.Category.Name != "Video")
+                    t.Link = null;
+            }
+
 
             return Ok(_mapper.Map<IReadOnlyList<MaterialToReturnDto>>(materials));
         }
@@ -77,6 +86,8 @@ namespace API.Controllers
 
             var spec = new MaterialByUserUidAndMaterialId(userUid, materialId);
             var material = await _repo.GetEntityWithSpecification(spec);
+
+            if (material.Category.Name != "Video") material.Link = null;
 
             return Ok(_mapper.Map<MaterialToReturnDto>(material));
         }

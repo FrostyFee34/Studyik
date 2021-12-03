@@ -9,6 +9,7 @@ namespace API.DTO
         public string Content { get; set; }
         public int? GroupId { get; set; }
         public int CategoryId { get; set; }
+        public string Link { get; set; }
         public DateTime CreationDate { get; set; }
     }
 }

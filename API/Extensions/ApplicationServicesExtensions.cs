@@ -5,6 +5,7 @@ using API.Errors;
 using Core.Interfaces;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
