@@ -1,0 +1,53 @@
+<div>
+	<nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+		<div class="sidebar-sticky pt-3">
+			<ul class="nav flex-column">
+				<li class="nav-item">
+					<a
+						class="nav-link border-dark mx-2"
+						[class.active]="'all' === this.checkedNavLink"
+						(click)="onNavLink('all')"
+					>
+						All
+					</a>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link border-dark mx-2"
+						[class.active]="'recent' === this.checkedNavLink"
+						(click)="onNavLink('recent')"
+					>
+						Recent
+					</a>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link border-dark mx-2 card-3" 
+						[class.active]="'videos' === this.checkedNavLink"
+						(click)="onNavLink('videos')"
+					>
+						Videos
+					</a>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link border-dark mx-2 card-1"
+						[class.active]="'files' === this.checkedNavLink"
+						(click)="onNavLink('files')"
+					>
+						Files
+					</a>
+				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link border-dark mx-2 card-2" 
+						[class.active]="'text' === this.checkedNavLink"
+						(click)="onNavLink('text')"
+					>
+						Text
+					</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</div>

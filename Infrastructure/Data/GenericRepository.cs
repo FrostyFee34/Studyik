@@ -54,6 +54,12 @@ namespace Infrastructure.Data
             return _studyikDbContext.SaveChangesAsync();
         }
 
+        public Task<int> DeleteAsync(T obj)
+        {
+            _studyikDbContext.Set<T>().Remove(obj);
+            return _studyikDbContext.SaveChangesAsync();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_studyikDbContext.Set<T>().AsQueryable(), spec);

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using API.DTO;
 using API.Errors;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
@@ -9,12 +10,12 @@ namespace API.Controllers
     public class AccountsController : BaseApiController
     {
         [HttpPost("verify")]
-        public async Task<IActionResult> VerifyToken([FromBody] string token)
+        public async Task<IActionResult> VerifyToken(TokenVerifyRequest request)
         {
             var auth = FirebaseAuth.DefaultInstance;
             try
             {
-                var response = await auth.VerifyIdTokenAsync(token);
+                var response = await auth.VerifyIdTokenAsync(request.Token);
                 if (response != null)
                     return Accepted();
             }

@@ -1,1 +1,80 @@
-<p>nav-bar works!</p>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+	<a
+		class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 font-weight-bold"
+		[routerLink]="['']"
+		routerLinkActive="router-link-active"
+	>
+		Studyik
+	</a>
+	<button
+		class="navbar-toggler position-absolute d-md-none collapsed"
+		type="button"
+		data-toggle="collapse"
+		aria-expanded="false"
+		aria-label="Toggle navigation"
+	>
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="input-group">
+		<input
+			class="form-control form-control-dark"
+			type="text"
+			placeholder="Search"
+			aria-label="Search"
+		/>
+		<div class="input-group-btn">
+			<button class="btn btn-default" type="submit">
+				<i class="fa fa-search text-white"></i>
+			</button>
+		</div>
+	</div>
+
+	<div class="text-nowrap">
+		<div
+		class="dropdown"
+		ngbDropdown
+		*ngIf="currentUser && currentUser.isSignedIn; else loginBlock"
+	>
+		<a class="dropdown-toggle text-white nav-link" ngbDropdownToggle>
+			Welcome, {{ currentUser.displayName || currentUser.email }}
+		</a>
+		<div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
+			<a
+				routerLink="/basket"
+				ngbDropdownItem
+				class="dropdown-item d-flex align-items-center py-2"
+			>
+				<i class="fa fa-shopping-cart mr-3"></i>
+				View basket
+			</a>
+			<a
+				routerLink="/orders"
+				ngbDropdownItem
+				class="dropdown-item d-flex align-items-center py-2"
+			>
+				<i class="fa fa-history mr-3"></i>
+				View Orders
+			</a>
+			<div class="dropdown-divider"></div>
+			<a
+				(click)="logout()"
+				ngbDropdownItem
+				class="dropdown-item d-flex align-items-center py-2"
+			>
+				<i class="fa fa-sign-out mr-3"></i>
+				Log Out
+			</a>
+		</div>
+	</div>
+	<ng-template #loginBlock
+		><a
+			class="text-white nav-link"
+			[routerLink]="['/auth/sign-up']"
+			routerLinkActive="router-link-active"
+			>sign-up
+		</a></ng-template
+	>
+	</div>
+		
+	
+</nav>

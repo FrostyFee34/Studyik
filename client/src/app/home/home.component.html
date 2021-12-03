@@ -1,0 +1,9 @@
+<app-side-bar></app-side-bar>
+<div class="col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-2">
+	<div class="row" *ngIf="(this.homeService.getMaterials() | async) as  materials">
+		<div class="col-4 p-0 m-0" *ngFor="let material of materials">
+			<app-material-item [materialValue]="material"> </app-material-item>
+		</div>
+	</div>
+</div>
+<div class="btn btn-info  btn-round"><i class="fa fa-plus"></i></div>

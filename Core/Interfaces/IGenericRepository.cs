@@ -14,6 +14,7 @@ namespace Core.Interfaces
         Task<int> CountAsync(ISpecification<T> spec);
         Task<int> InsertAsync(T obj);
         Task<int> UpdateAsync(T obj);
+        Task<int> DeleteAsync(T obj);
 
     }
 }

@@ -1,0 +1,18 @@
+<div
+	class="card"
+	*ngIf="material"
+	[ngClass]="{
+		'card-1': material.category === 'File',
+		'card-2': material.category === 'Text',
+		'card-3': material.category === 'Video'
+	}"
+>
+	<a class="card__exit"><i class="fas fa-times"></i></a>
+	<p class="card__category">{{ material.group }}</p>
+	<h3 class="card__title">
+		{{ material.title }}
+	</h3>
+	<p class="card__apply">
+		<a class="card__link" href="#">View <i class="fas fa-arrow-right"></i></a>
+	</p>
+</div>

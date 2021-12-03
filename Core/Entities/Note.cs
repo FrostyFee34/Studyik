@@ -1,4 +1,6 @@
-﻿namespace Core.Entities
+﻿using System;
+
+namespace Core.Entities
 {
     public class Note : BaseEntity
     {
@@ -9,5 +11,6 @@
         public Material Material { get; set; }
         public int? MaterialId { get; set; }
         public string UserUid { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
