@@ -5,6 +5,7 @@ export interface IMaterial{
     group: string;
     groupId: number;
     category: string;
+    link: string;
     categoryId: number;
     creationDate: Date;
 }
