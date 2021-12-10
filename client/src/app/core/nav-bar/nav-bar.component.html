@@ -16,47 +16,38 @@
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="input-group">
+
 		<input
-			class="form-control form-control-dark"
+      (keyup.enter)="onSearch()"
+      class="form-control form-control-dark"
 			type="text"
 			placeholder="Search"
 			aria-label="Search"
+      #search
 		/>
 		<div class="input-group-btn">
-			<button class="btn btn-default" type="submit">
+			<button class="btn btn-default" (click)="onSearch()" type="submit">
 				<i class="fa fa-search text-white"></i>
 			</button>
 		</div>
+    <div class="input-group-btn">
+      <button class="btn btn-default text-white" (click)="onReset()" type="reset">
+        Clear
+      </button>
+    </div>
 	</div>
 
 	<div class="text-nowrap">
 		<div
 		class="dropdown"
 		ngbDropdown
-		*ngIf="currentUser && currentUser.isSignedIn; else loginBlock"
+		*ngIf="currentUser$ | async as user;"
 	>
 		<a class="dropdown-toggle text-white nav-link" ngbDropdownToggle>
-			Welcome, {{ currentUser.displayName || currentUser.email }}
+			Welcome, {{ user.displayName || user.email }}
 		</a>
 		<div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
-			<a
-				routerLink="/basket"
-				ngbDropdownItem
-				class="dropdown-item d-flex align-items-center py-2"
-			>
-				<i class="fa fa-shopping-cart mr-3"></i>
-				View basket
-			</a>
-			<a
-				routerLink="/orders"
-				ngbDropdownItem
-				class="dropdown-item d-flex align-items-center py-2"
-			>
-				<i class="fa fa-history mr-3"></i>
-				View Orders
-			</a>
-			<div class="dropdown-divider"></div>
-			<a
+      <a
 				(click)="logout()"
 				ngbDropdownItem
 				class="dropdown-item d-flex align-items-center py-2"
@@ -66,7 +57,7 @@
 			</a>
 		</div>
 	</div>
-	<ng-template #loginBlock
+	<ng-template [ngIf]="(currentUser$ | async)===null"
 		><a
 			class="text-white nav-link"
 			[routerLink]="['/auth/sign-up']"
@@ -75,6 +66,6 @@
 		</a></ng-template
 	>
 	</div>
-		
-	
+
+
 </nav>

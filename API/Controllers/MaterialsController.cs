@@ -32,29 +32,29 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Add(MaterialToInsertDto materialDto)
+        public async Task<ActionResult<MaterialToReturnDto>> Add(MaterialToInsertDto materialDto)
         {
             var material = _mapper.Map<Material>(materialDto);
             material.UserUid ??= _currentUser.GetUid();
             
-            var isFinished = await _repo.InsertAsync(material);
-            if (isFinished <= 0)
+            var addedMaterial = await _repo.InsertAsync(material);
+            if (addedMaterial == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-            return Ok();
+            return Ok(_mapper.Map<MaterialToReturnDto>(addedMaterial));
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(MaterialToInsertDto materialDto)
+        public async Task<ActionResult<MaterialToReturnDto>> Update(MaterialToInsertDto materialDto)
         {
             var material = _mapper.Map<Material>(materialDto);
             material.UserUid ??= _currentUser.GetUid();
 
-            var isFinished = await _repo.UpdateAsync(material);
-            if (isFinished <= 0)
+            var addedMaterial = await _repo.UpdateAsync(material);
+            if (addedMaterial == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-            return Ok();
+            return Ok(_mapper.Map<MaterialToReturnDto>(addedMaterial));
         }
 
         [HttpGet]
@@ -67,14 +67,6 @@ namespace API.Controllers
             var spec = new MaterialsByUserUidAndParamsSpec(specParams, userUid);
             var materials = await _repo.ListAsync(spec);
 
-            // Removing links
-            foreach (var t in materials)
-            {
-                if (t.Category.Name != "Video")
-                    t.Link = null;
-            }
-
-
             return Ok(_mapper.Map<IReadOnlyList<MaterialToReturnDto>>(materials));
         }
 
@@ -86,8 +78,6 @@ namespace API.Controllers
 
             var spec = new MaterialByUserUidAndMaterialId(userUid, materialId);
             var material = await _repo.GetEntityWithSpecification(spec);
-
-            if (material.Category.Name != "Video") material.Link = null;
 
             return Ok(_mapper.Map<MaterialToReturnDto>(material));
         }

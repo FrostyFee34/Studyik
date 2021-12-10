@@ -29,30 +29,29 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Add(NoteDto noteDto)
+        public async Task<ActionResult<NoteDto>> Add(NoteDto noteDto)
         {
             var note = _mapper.Map<Note>(noteDto);
             note.UserUid ??= _currentUser.GetUid();
 
-            var isFinished = await _repo.InsertAsync(note);
-            if (isFinished <= 0)
+            var addedNote = await _repo.InsertAsync(note);
+            if (addedNote == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-
-            return Ok();
+            return Ok(_mapper.Map<NoteDto>(addedNote));
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(NoteDto noteDto)
+        public async Task<ActionResult<NoteDto>> Update(NoteDto noteDto)
         {
             var note = _mapper.Map<Note>(noteDto);
             note.UserUid ??= _currentUser.GetUid();
 
-            var isFinished = await _repo.UpdateAsync(note);
-            if (isFinished <= 0)
+            var addedNote = await _repo.UpdateAsync(note);
+            if (addedNote == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-            return Ok();
+            return Ok(_mapper.Map<NoteDto>(addedNote));
         }
 
         [HttpGet]
@@ -64,6 +63,17 @@ namespace API.Controllers
             var spec = new NotesByUserUidSpec(userUid);
             var notes = await _repo.ListAsync(spec);
 
+            return Ok(_mapper.Map<IReadOnlyList<NoteDto>>(notes));
+        }
+
+        [HttpGet("material/{materialId}")]
+        public async Task<ActionResult<IReadOnlyList<NoteDto>>> GetNotesByMaterialId(int materialId)
+        {
+            var userUid = _currentUser.GetUid();
+            if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
+
+            var spec = new NotesByUserUidAndMaterialIdSpec(userUid, materialId);
+            var notes = await _repo.ListAsync(spec);
             return Ok(_mapper.Map<IReadOnlyList<NoteDto>>(notes));
         }
 

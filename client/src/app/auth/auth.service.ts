@@ -17,7 +17,7 @@ export class AuthService {
 
 	constructor(
 		private fireAuth: AngularFireAuth,
-		private httpclient: HttpClient, 
+		private httpclient: HttpClient,
 	) {
 		this.fireAuth.authState.subscribe((firebaseUser) => {
 			this.configureAuthState(firebaseUser);
@@ -41,7 +41,6 @@ export class AuthService {
 
 								theUser.isSignedIn = true;
 								localStorage.setItem('jwt', theToken);
-								console.log(theUser);
 								this.user$.next(theUser);
 							},
 							error: (err) => {
@@ -60,20 +59,15 @@ export class AuthService {
 	}
 
 	doGoogleSignIn(): Promise<void> {
-		var googleProvider = new firebase.auth.GoogleAuthProvider();
-		googleProvider.addScope('email');
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    googleProvider.addScope('email');
 		googleProvider.addScope('profile');
 		return this.fireAuth.signInWithPopup(googleProvider).then((auth) => {});
 	}
 
 	private doSignedOutUser() {
-		let theUser = new User();
-		theUser.displayName = null;
-		theUser.email = null;
-		theUser.uid = null;
-		theUser.isSignedIn = false;
-		localStorage.removeItem('jwt');
-		this.user$.next(theUser);
+    localStorage.removeItem('jwt');
+		this.user$.next(null);
 	}
 
 	signUp(email: string, password: string, name: string) {

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.DTO;
 using API.Errors;
 using API.Services;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -16,10 +18,12 @@ namespace API.Controllers
     {
         private readonly UserResolverService _currentUser;
         private readonly IGenericRepository<Group> _repo;
+        private readonly IMapper _mapper;
 
-        public GroupsController(IGenericRepository<Group> repo, IHttpContextAccessor contextAccessor)
+        public GroupsController(IGenericRepository<Group> repo, IHttpContextAccessor contextAccessor, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
             _currentUser = new UserResolverService(contextAccessor);
         }
 
@@ -36,29 +40,27 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(Group group)
+        public async Task<ActionResult<Group>> Add(Group group)
         {
             group.UserUid ??= _currentUser.GetUid();
 
-            var isFinished = await _repo.InsertAsync(group);
-            if (isFinished <= 0)
+            var addedGroup = await _repo.InsertAsync(group);
+            if (addedGroup == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-
-            return Ok();
+            return Ok(addedGroup);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(Group group)
+        public async Task<ActionResult<Group>> Update(Group group)
         {
             group.UserUid ??= _currentUser.GetUid();
 
-            var isFinished = await _repo.UpdateAsync(group);
-            if (isFinished <= 0)
+            var addedGroup = await _repo.UpdateAsync(group);
+            if (addedGroup == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
-
-            return Ok();
+            return Ok(addedGroup);
         }
     }
 }

@@ -7,12 +7,12 @@
 		'card-3': material.category === 'Video'
 	}"
 >
-	<a class="card__exit"><i class="fas fa-times"></i></a>
-	<p class="card__category">{{ material.group }}</p>
+	<a (click)="onDelete()" class="card__delete"><i class="fas fa-times"></i></a>
+	<p class="card__category">{{ material.category }}</p>
 	<h3 class="card__title">
 		{{ material.title }}
 	</h3>
 	<p class="card__apply">
-		<a class="card__link" href="#">View <i class="fas fa-arrow-right"></i></a>
+		<a class="card__link" [routerLink]="['material-view', material.id]" >View <i class="fas fa-arrow-right"></i></a>
 	</p>
 </div>

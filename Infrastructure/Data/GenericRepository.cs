@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
@@ -41,16 +42,18 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).CountAsync();
         }
 
-        public Task<int> InsertAsync(T obj)
+        public async Task<T> InsertAsync(T obj)
         {
             _studyikDbContext.Set<T>().Add(obj);
-            return _studyikDbContext.SaveChangesAsync();
+            await _studyikDbContext.SaveChangesAsync();
+            return obj;
         }
 
-        public Task<int> UpdateAsync(T obj)
+        public async Task<T> UpdateAsync(T obj)
         {
             _studyikDbContext.Set<T>().Update(obj);
-            return _studyikDbContext.SaveChangesAsync();
+            await _studyikDbContext.SaveChangesAsync();
+            return obj;
         }
 
         public Task<int> DeleteAsync(T obj)

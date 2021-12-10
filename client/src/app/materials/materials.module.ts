@@ -5,9 +5,10 @@ import { MaterialItemComponent } from './material-item/material-item.component';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { SideBarComponent } from './side-bar/side-bar.component';
-import { MaterialCreateComponent } from './material-create/material-create.component';
 import { MaterialViewComponent } from './material-view/material-view.component';
 import {MaterialsRoutingModule} from "./materials-routing.module";
+import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
+import {YouTubePlayerModule} from "@angular/youtube-player";
 
 
 
@@ -16,11 +17,10 @@ import {MaterialsRoutingModule} from "./materials-routing.module";
     MaterialsComponent,
     MaterialItemComponent,
     SideBarComponent,
-    MaterialCreateComponent,
     MaterialViewComponent
   ],
-  imports: [
-    CommonModule, SharedModule, CoreModule, MaterialsRoutingModule
-  ]
+    imports: [
+        CommonModule, SharedModule, CoreModule, MaterialsRoutingModule, NgbDropdownModule, YouTubePlayerModule
+    ]
 })
 export class MaterialsModule { }

@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialsModule } from './materials/materials.module';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import {YouTubePlayerModule} from "@angular/youtube-player";
 
 @NgModule({
 	declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 		AngularFireModule.initializeApp(environment.firebase),
 		AngularFirestoreModule,
 		AngularFireAuthModule,
+    YouTubePlayerModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
 	],

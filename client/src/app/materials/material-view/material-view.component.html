@@ -1,1 +1,71 @@
-<p>material-view works!</p>
+<div class="container mt-3">
+  <ng-container *ngIf="material && materialForm; else elseBlock">
+    <form [formGroup]="materialForm">
+      <div class="row">
+        <div class="col-9">
+          <input class="input mb-1" style="width: 90%" type="text" placeholder="title" formControlName="title">
+        </div>
+        <div class="col-3 mt-2">
+          <div class="btn-group">
+
+            <div ngbDropdown class="d-inline-block"
+                 *ngIf="material.category === 'Video' || material.category === 'Text'">
+              <button class="btn btn-outline-primary" ngbDropdownToggle>Youtube video id</button>
+              <div ngbDropdownMenu class="p-0">
+                <input type="text" formControlName="link" id="link" class="form-control"
+                       placeholder="?v="
+                       autocomplete="username">
+
+              </div>
+            </div>
+
+            <div ngbDropdown *ngIf="material.category === 'File' || material.category === 'Text'">
+
+              <button (click)="onDownloadFile()" *ngIf="material.link" class="btn btn-outline-primary mb-1 ">Download a file
+              </button>
+
+              <button class="btn btn-info " ngbDropdownToggle>Upload file</button>
+              <div class="dropdown-menu p-0" ngbDropdownMenu>
+                <div ngbDropdownItem class="input-group p-0">
+                  <div class="input-group-prepend">
+                    <button (click)="onRemoveFile()" class="btn btn-outline-secondary">Remove file</button>
+                  </div>
+                  <div class="custom-file">
+                    <label for="file" class="custom-file-label">Choose file</label>
+                    <input (change)="onFileChange($event)" accept=".pdf" formControlName="fileSource" id="file"
+                           class="custom-file-input" type="file">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-9" >
+          <textarea *ngIf="material.category !== 'Video'" formControlName="content" class="content"
+                    style="width: 100%; height: 100%"
+                    placeholder="content"></textarea>
+
+          <youtube-player *ngIf="material.category === 'Video'"
+            [videoId]="material.link"
+            suggestedQuality="highres"
+            [width]="800" [height]="500"
+            [startSeconds]="10"
+            [endSeconds]="8">>
+
+          </youtube-player>
+
+
+        </div>
+        <div class="col-3">
+          Notes
+        </div>
+      </div>
+      <div (click)="onSubmit()" class="btn btn-info btn-round"><i class="fa fa-save"></i></div>
+    </form>
+  </ng-container>
+  <ng-template #elseBlock><p>There is no material loaded</p></ng-template>
+</div>

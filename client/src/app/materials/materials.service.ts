@@ -1,6 +1,6 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {IMaterial} from '../shared/models/material';
 import {MaterialParams} from '../shared/models/materialParams';
@@ -9,9 +9,10 @@ import {MaterialParams} from '../shared/models/materialParams';
   providedIn: 'root',
 })
 export class MaterialsService {
-  baseUrl = environment.apiUrl;
-  materials?: Observable<IMaterial[]>;
-  params = new MaterialParams();
+  private baseUrl = environment.apiUrl;
+  private materials$?: Observable<IMaterial[]>;
+  private materials: IMaterial[] = [];
+  private params = new MaterialParams();
 
   constructor(private http: HttpClient) {
   }
@@ -30,25 +31,35 @@ export class MaterialsService {
     if (this.params.search) {
       httpParams = httpParams.append('search', this.params.search);
     }
-    this.materials = this.http.get<IMaterial[]>(this.baseUrl + 'materials', {
+    this.materials$ = this.http.get<IMaterial[]>(this.baseUrl + 'materials', {
       params: httpParams,
     });
+    this.materials$.subscribe(
+      response=>{
+        this.materials = response;
+      }
+    )
   }
 
   getMaterials() {
-    return this.materials;
+    return this.materials$;
   }
 
-  getMaterial(materialId: number) {
-    return this.http.get<IMaterial>(this.baseUrl + `materials/${materialId}`);
+  getMaterial(materialId: number, hardLoad = false) {
+    if(hardLoad){
+      return this.http.get<IMaterial>(this.baseUrl + `materials/${materialId}`);
+    }
+    const material = this.materials.find(m => m.id === materialId);
+    return of(material);
+
   }
 
   insertMaterial(material: IMaterial) {
-    return this.http.post(this.baseUrl + 'materials', material);
+    return this.http.post<IMaterial>(this.baseUrl + 'materials', material);
   }
 
   updateMaterial(material: IMaterial) {
-    return this.http.put(this.baseUrl + 'materials', material);
+    return this.http.put<IMaterial>(this.baseUrl + 'materials', material);
   }
 
   deleteMaterial(materialId: number) {

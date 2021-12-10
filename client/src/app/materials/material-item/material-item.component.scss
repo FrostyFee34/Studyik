@@ -17,9 +17,10 @@
 }
 
 .card__link,
-.card__exit,
+.card__delete,
 .card__icon {
   position: relative;
+  cursor: pointer;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.9);
 }
@@ -39,10 +40,13 @@
   width: 100%;
 }
 
-.card__exit {
+.card__delete {
   cursor: pointer;
   grid-row: 1/2;
   justify-self: end;
+  :hover{
+    transform: scale(1.1);
+  }
 }
 
 .card__category {

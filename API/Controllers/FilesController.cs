@@ -103,10 +103,10 @@ namespace API.Controllers
 
                     // Update material
                     material.Link = dbPath;
-                    var isFinished = await _repo.UpdateAsync(material);
-                    if (isFinished <= 0)
-                        return StatusCode(StatusCodes.Status500InternalServerError,
-                            new ApiException(500, "Database problems"));
+                    var updatedMaterial = await _repo.UpdateAsync(material);
+
+                    if (updatedMaterial == null)
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
 
                     return Ok();
                 }

@@ -8,7 +8,7 @@ a {
 	.navbar-brand {
 		padding-top: 0.75rem;
 		padding-bottom: 0.75rem;
-		font-size: 1rem;
+		font-size: large;
 		background-color: rgba(0, 0, 0, 0.25);
 		cursor: pointer;
 	}
@@ -40,4 +40,6 @@ a {
 .nav-link {
 	cursor: pointer;
 }
-
+.dropdown-item{
+  cursor: pointer;
+}

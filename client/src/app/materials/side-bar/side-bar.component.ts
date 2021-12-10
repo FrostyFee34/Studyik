@@ -24,7 +24,7 @@ export class SideBarComponent implements OnInit {
       this.params = new MaterialParams();
       this.params.search = this.homeService.getMaterialParams().search;
       switch (value) {
-        case 'recent': {
+        case 'all': {
           this.params.sort = 'dateDesc';
           break;
         }
