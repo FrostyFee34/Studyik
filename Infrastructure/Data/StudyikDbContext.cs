@@ -6,6 +6,18 @@ namespace Infrastructure.Data
     {
         public StudyikDbContext(DbContextOptions<StudyikDbContext> options) : base(options)
         {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder
+                .Entity<Material>()
+                .HasMany(e => e.Notes)
+                .WithOne(e => e.Material)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         public DbSet<Material> Materials { get; set; }

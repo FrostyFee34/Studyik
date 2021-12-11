@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Entities
 {
@@ -13,5 +14,6 @@ namespace Core.Entities
         public int CategoryId { get; set; }
         public string UserUid { get; set; }
         public DateTime CreationDate { get; set; }
+        public List<Note> Notes { get; set; }
     }
 }

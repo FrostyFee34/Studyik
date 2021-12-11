@@ -19,6 +19,7 @@ export class NoteItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    console.log(this.note);
   }
 
   createForm() {
@@ -55,7 +56,9 @@ export class NoteItemComponent implements OnInit {
     }
   }
 
-  onView() {
+  goToTime() {
+    console.log(this.note?.startIndex);
+    console.log(this.seekTo);
     if (this.note?.startIndex) {
       this.seekTo.emit(this.note.startIndex);
     }

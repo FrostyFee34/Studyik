@@ -26,6 +26,7 @@ export class MaterialViewComponent implements OnInit, AfterViewInit {
   }
 
   seekTo(seconds: number){
+    console.log(seconds);
     this.youtubePlayer?.seekTo(seconds, true);
   }
 
@@ -128,10 +129,8 @@ export class MaterialViewComponent implements OnInit, AfterViewInit {
         materialId: this.material.id,
       }
       if(this.youtubePlayer){
-        console.log('asd f');
         note.startIndex = Math.trunc(this.youtubePlayer.getCurrentTime());
       }
-      console.log(note);
       this.notesService.postNote(note).subscribe(
         () => {
           this.notesService.updateNotes(note.materialId);
