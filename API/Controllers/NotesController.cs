@@ -89,5 +89,24 @@ namespace API.Controllers
 
             return Ok(_mapper.Map<NoteDto>(note));
         }
+
+        [HttpDelete("{noteId}")]
+        public async Task<ActionResult> DeleteMaterial(int noteId)
+        {
+            var userUid = _currentUser.GetUid();
+            if (userUid == null) return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500));
+
+            var spec = new NoteByUserUidAndNoteIdSpec(userUid, noteId);
+            var material = await _repo.GetEntityWithSpecification(spec);
+            if (material != null)
+            {
+                var result = await _repo.DeleteAsync(material);
+                if (result > 0)
+                    return Ok();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiException(500, "Database problems"));
+            }
+
+            return BadRequest(new ApiException(400));
+        }
     }
 }

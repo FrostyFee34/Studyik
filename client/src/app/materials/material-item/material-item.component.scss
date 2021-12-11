@@ -3,7 +3,8 @@
   margin: 20px;
   padding: 20px;
   width: 350px;
-  min-height: 200px;
+  min-height: 120px;
+  max-height: 250px;
   display: grid;
   grid-template-rows: 20px 50px 1fr 50px;
   border-radius: 10px;

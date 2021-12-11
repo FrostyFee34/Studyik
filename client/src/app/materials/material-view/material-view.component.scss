@@ -1,7 +1,8 @@
-*{
+* {
   font-size: large;
 }
-.input{
+
+.input {
   font-weight: normal;
   font-size: xx-large;
   border: 0;
@@ -9,9 +10,10 @@
   border-bottom: 2px solid rgba(71, 71, 65, 0.37);
 }
 
-.content{
+.content {
   min-height: 30rem;
 }
+
 .content {
   color: #333333;
   background-color: #eeeeee;
@@ -32,24 +34,51 @@
 .content:focus {
   background-color: white;
 }
-.select{
+
+.select {
   border: 0;
   outline: 0;
 }
-.dropdown-menu{
+
+.dropdown-menu {
   width: 400px;
-  :active{
+
+  :active {
     background: none;
   }
-  :hover{
+
+  :hover {
     background: none;
   }
 }
-.input-group-prepend{
-  :hover{
+
+.input-group-prepend {
+  :hover {
     background: darkgray;
   }
 }
+
+.item {
+  border: 2px solid darkgrey;
+  max-height: 100px;
+  .fas {
+    font-size: 40px
+  }
+}
+
+.item:hover {
+  border-color: black;
+}
+
+.noteCreation{
+  cursor: pointer;
+}
+.noteCreation:hover{
+  color: white!important;
+  background: #007bff;
+}
+
+
 .btn-round {
   width: 100px;
   height: 100px;
@@ -65,7 +94,9 @@
   :hover {
     transform: scale(1.02);
   }
+
   z-index: 100;
+
   .fa {
     font-size: 4.5rem;
   }

@@ -1,0 +1,35 @@
+<div *ngIf="note" class="d-flex justify-content-between align-items-center py-1 item" style="cursor: pointer">
+  <div class="font-weight-bolder text-uppercase"><span>{{this.note.title}}</span></div>
+  <div>
+    <div ngbDropdown class="d-inline mr-1 font-weight-bold">
+      <button class="btn btn-outline-primary font-weight-bold text-uppercase" ngbDropdownToggle>View</button>
+      <div ngbDropdownMenu class="dropdownArea">
+        <form class="px-4 py-3" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="email" class="form-control text-uppercase" id="title" formControlName="title"
+                   placeholder="Your tittle here">
+          </div>
+          <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" cols="5" placeholder="Your content is here" formControlName="content"
+                      class="form-control"></textarea>
+          </div>
+
+          <div class="btn-group ">
+            <button type="submit" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="onReset()">Reset</button>
+            <button type="button" class="btn btn-outline-info" (click)="onView()">goto</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <button (click)="this.onDelete()" class="btn p-0 m-0 d-inline"><i class="far fa-window-close"></i></button>
+  </div>
+</div>
+
+
+

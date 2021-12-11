@@ -1,24 +1,36 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {IMaterial} from "../../shared/models/material";
 import {ActivatedRoute} from "@angular/router";
 import {MaterialsService} from "../materials.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FilesService} from "../files.service";
+import {NotesService} from "../notes.service";
+import {Observable} from "rxjs";
+import {INote} from "../../shared/models/note";
+import {YouTubePlayer} from "@angular/youtube-player";
 
 @Component({
   selector: 'app-material-view',
   templateUrl: './material-view.component.html',
   styleUrls: ['./material-view.component.scss']
 })
-export class MaterialViewComponent implements OnInit {
-
+export class MaterialViewComponent implements OnInit, AfterViewInit {
 
   material?: IMaterial;
   materialForm?: FormGroup;
-
+  notes$?: Observable<INote[] | null>;
+  @ViewChild('youtubePlayer', {static: false}) youtubePlayer?: YouTubePlayer;
 
   constructor(private materialsService: MaterialsService, private route: ActivatedRoute,
-              private filesService: FilesService) {
+              private filesService: FilesService, private notesService: NotesService) {
+  }
+
+  seekTo(seconds: number){
+    this.youtubePlayer?.seekTo(seconds, true);
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   ngOnInit(): void {
@@ -41,9 +53,17 @@ export class MaterialViewComponent implements OnInit {
       this.materialsService.getMaterial(+id, hardLoad).subscribe(
         response => {
           this.material = response;
+          this.setNotes();
           this.createMaterialForm();
         }
       )
+    }
+  }
+
+  setNotes(){
+    if (this.material) {
+      this.notesService.updateNotes(this.material?.id);
+      this.notes$ = this.notesService.notes.asObservable();
     }
   }
 
@@ -54,9 +74,9 @@ export class MaterialViewComponent implements OnInit {
       content: this.materialForm?.value.content,
       categoryId: this.material?.categoryId
     }
+
     if (this.materialForm?.value.fileName) {
       updatedMaterial.categoryId = 1;
-
       const formData = new FormData();
       formData.append('file', this.materialForm.get('fileName')?.value);
       this.filesService.uploadFile(formData, this.material!.id).subscribe(
@@ -69,8 +89,6 @@ export class MaterialViewComponent implements OnInit {
       updatedMaterial.link = this.materialForm.value.link
       updatedMaterial.categoryId = 2;
     }
-
-
     this.materialsService.updateMaterial(updatedMaterial).subscribe(
       () => {
         this.setMaterial(true);
@@ -90,6 +108,7 @@ export class MaterialViewComponent implements OnInit {
 
   onRemoveFile() {
     this.materialForm?.get('file')?.reset();
+
   }
 
   onDownloadFile() {
@@ -100,6 +119,26 @@ export class MaterialViewComponent implements OnInit {
     })
   }
 
+  onNoteCreate() {
+    if (this.material?.id) {
+      const note: INote = {
+        id: 0,
+        title: 'new note',
+        content: '',
+        materialId: this.material.id,
+      }
+      if(this.youtubePlayer){
+        console.log('asd f');
+        note.startIndex = Math.trunc(this.youtubePlayer.getCurrentTime());
+      }
+      console.log(note);
+      this.notesService.postNote(note).subscribe(
+        () => {
+          this.notesService.updateNotes(note.materialId);
+        }
+      )
+    }
+  }
 
 }
 

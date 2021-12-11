@@ -9,6 +9,7 @@ import { MaterialViewComponent } from './material-view/material-view.component';
 import {MaterialsRoutingModule} from "./materials-routing.module";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {YouTubePlayerModule} from "@angular/youtube-player";
+import { NoteItemComponent } from './note-item/note-item.component';
 
 
 
@@ -17,7 +18,8 @@ import {YouTubePlayerModule} from "@angular/youtube-player";
     MaterialsComponent,
     MaterialItemComponent,
     SideBarComponent,
-    MaterialViewComponent
+    MaterialViewComponent,
+    NoteItemComponent
   ],
     imports: [
         CommonModule, SharedModule, CoreModule, MaterialsRoutingModule, NgbDropdownModule, YouTubePlayerModule
