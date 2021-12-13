@@ -35,8 +35,9 @@ namespace API
 
             services.AddHttpContextAccessor();
 
+            var defaultConnection = _config.GetConnectionString("DefaultConnection");
             services.AddDbContext<StudyikDbContext>(x =>
-                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+                x.UseMySql(defaultConnection, ServerVersion.AutoDetect(defaultConnection)));
 
             services.AddApplicationServices(_config);
 
