@@ -32,15 +32,6 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
-        {
-            return await ApplySpecification(spec).ToListAsync();
-        }
-
-        public async Task<int> CountAsync(ISpecification<T> spec)
-        {
-            return await ApplySpecification(spec).CountAsync();
-        }
 
         public async Task<T> InsertAsync(T obj)
         {
@@ -60,6 +51,11 @@ namespace Infrastructure.Data
         {
             _studyikDbContext.Set<T>().Remove(obj);
             return _studyikDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

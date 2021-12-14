@@ -22,7 +22,6 @@ namespace Infrastructure.Data
 
         public DbSet<Material> Materials { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Group> Groups { get; set; }
         public DbSet<Note> Notes { get; set; }
     }
 }

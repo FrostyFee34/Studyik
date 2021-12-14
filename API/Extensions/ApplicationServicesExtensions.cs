@@ -29,11 +29,7 @@ namespace API.Extensions
                 Credential = GoogleCredential.FromFile(config["Keys:Firebase"])
             });
 
-            var claims = new Dictionary<string, object>
-            {
-                {ClaimTypes.Role, "User"}
-            };
-
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
@@ -48,6 +44,11 @@ namespace API.Extensions
                         ValidAudience = config["Jwt:Firebase:ValidAudience"]
                     };
                 });
+
+            var claims = new Dictionary<string, object>
+            {
+                {ClaimTypes.Role, "User"}
+            };
 
             // Formatting response to validation error
             services.Configure<ApiBehaviorOptions>(options =>

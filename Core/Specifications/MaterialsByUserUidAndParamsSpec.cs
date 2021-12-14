@@ -8,11 +8,9 @@ namespace Core.Specifications
         public MaterialsByUserUidAndParamsSpec(MaterialsSpecParams specParams, string userUid) : base(m =>
             m.UserUid == userUid &&
             (string.IsNullOrEmpty(specParams.Search) || m.Title.ToLower().Contains(specParams.Search)) &&
-            (!specParams.CategoryId.HasValue || m.CategoryId == specParams.CategoryId) &&
-            (!specParams.GroupId.HasValue || m.GroupId == specParams.GroupId))
+            (!specParams.CategoryId.HasValue || m.CategoryId == specParams.CategoryId) )
         {
             AddInclude(o => o.Category);
-            AddInclude(o => o.Group);
 
             switch (specParams.Sort)
             {

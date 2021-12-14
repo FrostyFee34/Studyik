@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private homeService: MaterialsService
+    private materialsService: MaterialsService
   ) {
   }
 
@@ -51,7 +51,7 @@ export class SignUpComponent implements OnInit {
         () => {
           this.router.navigateByUrl(this.returnUrl);
           this.authService.getUserObservable().subscribe(() => {
-            this.homeService.updateMaterials();
+            this.materialsService.updateMaterials();
           });
         },
         (error) => {
@@ -65,7 +65,7 @@ export class SignUpComponent implements OnInit {
       () => {
         this.router.navigateByUrl(this.returnUrl);
         this.authService.getUserObservable().subscribe(() => {
-          this.homeService.updateMaterials();
+          this.materialsService.updateMaterials();
         });
       },
       (error) => {
