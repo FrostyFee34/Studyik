@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StudyikDbContext))]
-    [Migration("20211213162135_Transfer to MySQL")]
-    partial class TransfertoMySQL
+    [Migration("20220111164035_Rework")]
+    partial class Rework
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

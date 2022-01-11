@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class TransfertoMySQL : Migration
+    public partial class Rework : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

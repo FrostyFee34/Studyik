@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using API.Errors;
+﻿using API.Errors;
 using Core.Interfaces;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
@@ -13,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace API.Extensions
 {
